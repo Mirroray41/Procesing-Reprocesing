@@ -6,13 +6,13 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.zapp.prore.ProcesingReprocesing;
+import net.zapp.prore.ProcessingReprocessing;
 import net.zapp.prore.data.BlockStateGenerator;
 import net.zapp.prore.data.ItemModelGenerator;
 import net.zapp.prore.data.LanguageGeneration.LanguageGeneratorEN_US;
 import net.zapp.prore.data.RecipeGenerator;
 
-@Mod.EventBusSubscriber(modid = ProcesingReprocesing.MOD_ID,bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = ProcessingReprocessing.MOD_ID,bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGeneratorsRegister {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {

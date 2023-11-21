@@ -1,2 +1,4 @@
-// 1.20.1	2023-10-16T19:39:34.600607404	Loot Tables
+// 1.20.1	2023-10-17T08:36:18.242605348	Loot Tables
+ee3d5e5f032146634e7cca8d153988fd4e3d3c0f data/prore/loot_tables/blocks/electric_furnace.json
+2ce5c89d17f7ba11914b2c8b6ee037f26c893bb3 data/prore/loot_tables/blocks/steel_block.json
 defcebf2e4393fc92013609f12c3f5646c226d7b data/prore/loot_tables/blocks/tempblock.json

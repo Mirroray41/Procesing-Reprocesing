@@ -1,5 +1,20 @@
 {
+  "block.prore.electric_furnace": "Electric Furnace",
+  "block.prore.steel_block": "Steel Block",
   "block.prore.tempblock": "Temp Block",
+  "item.prore.configuration_1": "Configuration 1",
+  "item.prore.configuration_2": "Configuration 2",
+  "item.prore.configuration_3": "Configuration 3",
+  "item.prore.configuration_4": "Configuration 4",
+  "item.prore.configuration_5": "Configuration 5",
+  "item.prore.configuration_6": "Configuration 6",
+  "item.prore.configuration_7": "Configuration 7",
+  "item.prore.configuration_8": "Configuration 8",
+  "item.prore.configuration_9": "Configuration 9",
+  "item.prore.steel_ingot": "Steel Ingot",
+  "item.prore.steel_nugget": "Steel Nugget",
   "item.prore.tempitem": "Temp Item",
-  "itemtab.prore_tab": "Processing Reprocessing"
+  "item.prore.wrench": "Wrench",
+  "itemtab.prore_tab": "Processing Reprocessing",
+  "prore.container.electric_furnace": "Electric Furnace"
 }

@@ -1,0 +1,12 @@
+{
+  "type": "prore:electric_furnace",
+  "ingredients": [
+    {
+      "item": "minecraft:dirt"
+    }
+  ],
+  "output": {
+    "count": 1,
+    "item": "minecraft:diamond"
+  }
+}

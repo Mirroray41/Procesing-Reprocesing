@@ -16,6 +16,8 @@ public class BlockLootTablesGenerator extends BlockLootSubProvider {
     @Override
     protected void generate() {
         dropSelf(BlockRegister.TEMPBLOCK.get());
+        dropSelf(BlockRegister.STEEL_BLOCK.get());
+        dropSelf(BlockRegister.ELECTRIC_FURNACE.get());
     }
 
     @Override

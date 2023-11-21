@@ -3,10 +3,11 @@ package net.zapp.prore.data;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
-import net.zapp.prore.ProcesingReprocesing;
+import net.zapp.prore.ProcessingReprocessing;
 import net.zapp.prore.register.blocks.BlockRegister;
 import net.zapp.prore.register.items.ItemRegister;
 
@@ -23,6 +24,14 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 
         nineBlockStorageRecipes(consumer, RecipeCategory.BUILDING_BLOCKS, ItemRegister.TEMPITEM.get(), RecipeCategory.MISC,
                 BlockRegister.TEMPBLOCK.get());
+
+        nineBlockStorageRecipes(consumer, RecipeCategory.BUILDING_BLOCKS, ItemRegister.STEEL_INGOT.get(), RecipeCategory.MISC,
+                BlockRegister.STEEL_BLOCK.get());
+
+        nineBlockStorageRecipes(consumer, RecipeCategory.BUILDING_BLOCKS, ItemRegister.STEEL_NUGGET.get(), RecipeCategory.MISC,
+                ItemRegister.STEEL_INGOT.get());
+
+        blast_only(consumer, Items.IRON_INGOT, RecipeCategory.MISC, ItemRegister.STEEL_INGOT.get(), 0.1F, 100, "steel_ingot_from_iron_ingot");
 
         /*ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.STRING, 4)
                 .requires(ItemRegister.COTTON_BALL.get(), 3)
@@ -100,33 +109,33 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 
 
     protected static void nineBlockStorageRecipes(Consumer<FinishedRecipe> p_249580_, RecipeCategory p_251203_, ItemLike p_251689_, RecipeCategory p_251376_, ItemLike p_248771_) {
-        nineBlockStorageRecipes(p_249580_, p_251203_, p_251689_, p_251376_, p_248771_, getSimpleRecipeName(p_248771_), (String)null, getSimpleRecipeName(p_251689_), (String)null);
+        nineBlockStorageRecipes(p_249580_, p_251203_, p_251689_, p_251376_, p_248771_, getSimpleRecipeName(p_248771_) + "_from_" + getSimpleRecipeName(p_251689_), (String)null, getSimpleRecipeName(p_251689_) + "_from_" + getSimpleRecipeName(p_248771_), (String)null);
     }
 
     protected static void nineBlockStorageRecipes(Consumer<FinishedRecipe> p_250423_, RecipeCategory p_250083_, ItemLike p_250042_,
                                                   RecipeCategory p_248977_, ItemLike p_251911_, String p_250475_, @Nullable String p_248641_,
                                                   String p_252237_, @Nullable String p_250414_) {
         ShapelessRecipeBuilder.shapeless(p_250083_, p_250042_, 9).requires(p_251911_).group(p_250414_).unlockedBy(getHasName(p_251911_), has(p_251911_))
-                .save(p_250423_, new ResourceLocation(ProcesingReprocesing.MOD_ID, p_252237_));
+                .save(p_250423_, new ResourceLocation(ProcessingReprocessing.MOD_ID, p_252237_));
         ShapedRecipeBuilder.shaped(p_248977_, p_251911_).define('#', p_250042_).pattern("###").pattern("###").pattern("###").group(p_248641_)
-                .unlockedBy(getHasName(p_250042_), has(p_250042_)).save(p_250423_, new ResourceLocation(ProcesingReprocesing.MOD_ID, p_250475_));
+                .unlockedBy(getHasName(p_250042_), has(p_250042_)).save(p_250423_, new ResourceLocation(ProcessingReprocessing.MOD_ID, p_250475_));
     }
 
     public void smelt(Consumer<FinishedRecipe> finishedRecipe, ItemLike in, RecipeCategory recipeCategory, ItemLike out, float exp, int time, String name) {
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(in), recipeCategory, out, exp, time)
-                .unlockedBy("has_item", has(in)).save(finishedRecipe, new ResourceLocation(ProcesingReprocesing.MOD_ID ,name + "_smelt"));
+                .unlockedBy("has_item", has(in)).save(finishedRecipe, new ResourceLocation(ProcessingReprocessing.MOD_ID ,name + "_smelt"));
         SimpleCookingRecipeBuilder.blasting(Ingredient.of(in), recipeCategory, out, exp, time/2)
-                .unlockedBy("has_item", has(in)).save(finishedRecipe, new ResourceLocation(ProcesingReprocesing.MOD_ID ,name + "_blast"));
+                .unlockedBy("has_item", has(in)).save(finishedRecipe, new ResourceLocation(ProcessingReprocessing.MOD_ID ,name + "_blast"));
     }
 
     public void blast_only(Consumer<FinishedRecipe> finishedRecipe, ItemLike in, RecipeCategory recipeCategory, ItemLike out, float exp, int time, String name) {
         SimpleCookingRecipeBuilder.blasting(Ingredient.of(in), recipeCategory, out, exp, time)
-                .unlockedBy("has_item", has(in)).save(finishedRecipe, new ResourceLocation(ProcesingReprocesing.MOD_ID ,name + "_blast"));
+                .unlockedBy("has_item", has(in)).save(finishedRecipe, new ResourceLocation(ProcessingReprocessing.MOD_ID ,name + "_blast"));
     }
     public void cook(Consumer<FinishedRecipe> finishedRecipe, ItemLike in, RecipeCategory recipeCategory, ItemLike out, float exp, int time, String name) {
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(in), recipeCategory ,out, exp, time)
-                .unlockedBy("has_item", has(in)).save(finishedRecipe, new ResourceLocation(ProcesingReprocesing.MOD_ID ,name + "_smelt"));
+                .unlockedBy("has_item", has(in)).save(finishedRecipe, new ResourceLocation(ProcessingReprocessing.MOD_ID ,name + "_smelt"));
         SimpleCookingRecipeBuilder.smoking(Ingredient.of(in), recipeCategory, out, exp, time/2)
-                .unlockedBy("has_item", has(in)).save(finishedRecipe, new ResourceLocation(ProcesingReprocesing.MOD_ID ,name + "_smoke"));
+                .unlockedBy("has_item", has(in)).save(finishedRecipe, new ResourceLocation(ProcessingReprocessing.MOD_ID ,name + "_smoke"));
     }
 }

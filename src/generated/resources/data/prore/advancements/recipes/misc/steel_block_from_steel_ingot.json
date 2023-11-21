@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_tempitem": {
+    "has_steel_ingot": {
       "conditions": {
         "items": [
           {
             "items": [
-              "prore:tempitem"
+              "prore:steel_ingot"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "prore:tempblock"
+        "recipe": "prore:steel_block_from_steel_ingot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_tempitem",
+      "has_steel_ingot",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "prore:tempblock"
+      "prore:steel_block_from_steel_ingot"
     ]
   },
   "sends_telemetry_event": false
