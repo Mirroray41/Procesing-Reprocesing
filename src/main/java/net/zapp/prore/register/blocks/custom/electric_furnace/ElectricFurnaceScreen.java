@@ -1,6 +1,7 @@
 package net.zapp.prore.register.blocks.custom.electric_furnace;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -13,6 +14,8 @@ import net.zapp.prore.ProcessingReprocessing;
 
 public class ElectricFurnaceScreen extends AbstractContainerScreen<ElectricFurnaceMenu> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ProcessingReprocessing.MOD_ID, "textures/gui/electric_furnace.png");
+
+    protected int lastProgress = menu.tile.data.get(0);
     protected int usage = menu.getEnergyUsage();
     protected int capacity = menu.tile.data.get(3);
     protected float storedEnergy = menu.getEnergy();
@@ -92,16 +95,16 @@ public class ElectricFurnaceScreen extends AbstractContainerScreen<ElectricFurna
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
 
-        renderCustomTooltip(guiGraphics, x + 7, y + 133, 4, 7, mouseX, mouseY, Math.round(storedEnergy) + " / " + capacity + " RF");
-        renderCustomTooltip(guiGraphics, x + 7, y + 71, 4, 7, mouseX, mouseY, "In these slots you can add upgrades toF make your machine better!");
-        renderCustomTooltip(guiGraphics, x + 219, y + 53, 4, 7, mouseX, mouseY, "In these slots you can add arguments to make your machine do different things!");
+        renderCustomTooltip(guiGraphics, x + 7, y + 133, 4, 7, mouseX, mouseY, Component.literal(Math.round(storedEnergy) + " / " + capacity + " RF").withStyle(ChatFormatting.GRAY));
+        renderCustomTooltip(guiGraphics, x + 7, y + 71, 4, 7, mouseX, mouseY, Component.translatable("prore.info.upgrades"));
+        renderCustomTooltip(guiGraphics, x + 219, y + 53, 4, 7, mouseX, mouseY, Component.translatable("prore.info.arguments"));
 
-        renderCustomTooltip(guiGraphics, x + 209, y + 69, 10, 10, mouseX, mouseY, "Configure: Up");
-        renderCustomTooltip(guiGraphics, x + 209, y + 87, 10, 10, mouseX, mouseY, "Configure: Down");
-        renderCustomTooltip(guiGraphics, x + 209, y + 105, 10, 10, mouseX, mouseY, "Configure: Left");
-        renderCustomTooltip(guiGraphics, x + 209, y + 123, 10, 10, mouseX, mouseY, "Configure: Right");
+        renderCustomTooltip(guiGraphics, x + 209, y + 69, 10, 10, mouseX, mouseY, Component.literal(Component.translatable("prore.configure.up").getString() + Component.translatable("prore.port." + up).getString()));
+        renderCustomTooltip(guiGraphics, x + 209, y + 87, 10, 10, mouseX, mouseY, Component.literal(Component.translatable("prore.configure.down").getString() + Component.translatable("prore.port." + down).getString()));
+        renderCustomTooltip(guiGraphics, x + 209, y + 105, 10, 10, mouseX, mouseY, Component.literal(Component.translatable("prore.configure.left").getString() + Component.translatable("prore.port." + left).getString()));
+        renderCustomTooltip(guiGraphics, x + 209, y + 123, 10, 10, mouseX, mouseY, Component.literal(Component.translatable("prore.configure.right").getString() + Component.translatable("prore.port." + right).getString()));
 
-        renderCustomTooltip(guiGraphics, x + 206, y + 142, 16, 16, mouseX, mouseY, "Push/Pull: None");
+        renderCustomTooltip(guiGraphics, x + 206, y + 142, 16, 16, mouseX, mouseY, Component.literal(Component.translatable("prore.configure.push_pull").getString() + Component.translatable("prore.push_pull." + push_pull).getString()));
 
         renderCustomHighlight(guiGraphics, x + 7, y + 133, 4, 7, 40, 166, mouseX, mouseY);
         renderCustomHighlight(guiGraphics, x + 7, y + 71, 4, 7, 40, 166, mouseX, mouseY);
@@ -115,7 +118,7 @@ public class ElectricFurnaceScreen extends AbstractContainerScreen<ElectricFurna
 
     @Override
     protected void renderLabels(GuiGraphics p_281635_, int p_282681_, int p_283686_) {
-        String currentUsage = this.usage * ((storedEnergy > 0 && menu.isWorking()) ? 1 : 0 ) + " RF/t";
+        String currentUsage = menu.tile.data.get(9) * ((storedEnergy > 0 && menu.isWorking()) ? 1 : 0 ) + " RF/t";
 
         p_281635_.drawString(this.font, this.title, (imageWidth / 2) - (getTextLen(this.title.getString()) / 2), this.titleLabelY, 15596031, false);
         p_281635_.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX + 28, this.inventoryLabelY + 1, 15596031, false);
@@ -125,9 +128,9 @@ public class ElectricFurnaceScreen extends AbstractContainerScreen<ElectricFurna
 
 
 
-    private void renderCustomTooltip(GuiGraphics guiGraphics, int x, int y, int width, int height, int mouseX, int mouseY, String text) {
+    private void renderCustomTooltip(GuiGraphics guiGraphics, int x, int y, int width, int height, int mouseX, int mouseY, Component component) {
         if (mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height) {
-            guiGraphics.renderTooltip(this.font, Component.literal(text), mouseX, mouseY);
+            guiGraphics.renderTooltip(this.font, component, mouseX, mouseY);
         }
     }
 

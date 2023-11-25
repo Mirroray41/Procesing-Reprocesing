@@ -8,33 +8,60 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.zapp.prore.ProcessingReprocessing;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 
 public class ElectricFurnaceRecipe implements Recipe<SimpleContainer> {
-    private final NonNullList<Ingredient> inputItems;
+    private NonNullList<Ingredient> ingredients;
+    private NonNullList<Integer> ingredientCounts;
     private final ItemStack output;
+    private int outputAmount;
     private final ResourceLocation id;
+    private int processingTime;
+    private int powerUsage;
 
-    public ElectricFurnaceRecipe(NonNullList<Ingredient> inputItems, ItemStack output, ResourceLocation id) {
-        this.inputItems = inputItems;
+    public ElectricFurnaceRecipe(NonNullList<Ingredient> ingredients, NonNullList<Integer> ingredientCounts,  ItemStack output, int outputAmount, ResourceLocation id, int processingTime, int powerUsage) {
+        this.ingredients = ingredients;
+        this.ingredientCounts = ingredientCounts;
         this.output = output;
+        this.outputAmount = outputAmount;
         this.id = id;
+        this.processingTime = processingTime;
+        this.powerUsage = powerUsage;
+    }
+
+    public ElectricFurnaceRecipe(NonNullList<Ingredient> ingredients, ItemStack output, ResourceLocation id) {
+        this.ingredients = ingredients;
+        this.ingredientCounts = NonNullList.withSize(1, 1);
+        this.output = output;
+        this.outputAmount = 1;
+        this.id = id;
+        this.processingTime = 100;
+        this.powerUsage = 32;
     }
 
     @Override
     public boolean matches(SimpleContainer pContainer, Level pLevel) {
-        if(pLevel.isClientSide()) {
-            return false;
-        }
+        if (pLevel.isClientSide()) return false;
+        int numIngredients = ingredients.size();
 
-        return inputItems.get(0).test(pContainer.getItem(0));
+        for (int i = 0; i < numIngredients; i++) {
+            if (test(pContainer, i, i, ingredientCounts.get(i))) continue;
+            else return false;
+        }
+        return true;
     }
 
+    private boolean test(SimpleContainer container, int ingNum, int slot, int amount) {
+        return ingredients.get(ingNum).test(container.getItem(slot)) && container.getItem(slot).getCount() >= amount;
+    }
     @Override
     public ItemStack assemble(SimpleContainer pContainer, RegistryAccess pRegistryAccess) {
         return output.copy();
@@ -76,16 +103,23 @@ public class ElectricFurnaceRecipe implements Recipe<SimpleContainer> {
 
         @Override
         public ElectricFurnaceRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
-            ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "output"));
 
             JsonArray ingredients = GsonHelper.getAsJsonArray(pSerializedRecipe, "ingredients");
             NonNullList<Ingredient> inputs = NonNullList.withSize(1, Ingredient.EMPTY);
-
+            NonNullList<Integer> amounts = NonNullList.withSize(1, 1);
             for(int i = 0; i < inputs.size(); i++) {
                 inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
+                amounts.set(i, GsonHelper.getAsInt(ingredients.get(i).getAsJsonObject(), "count", 1));
             }
 
-            return new ElectricFurnaceRecipe(inputs, output, pRecipeId);
+            JsonArray details = pSerializedRecipe.getAsJsonArray("details");
+            int processingTime = GsonHelper.getAsInt(details.get(0).getAsJsonObject(), "time", 100);
+            int powerUsage = GsonHelper.getAsInt(details.get(1).getAsJsonObject(), "power", 0);
+
+            ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "output"));
+            int amount = GsonHelper.getAsInt(pSerializedRecipe.get("output").getAsJsonObject(), "count", 1);
+
+            return new ElectricFurnaceRecipe(inputs, amounts, output, amount, pRecipeId, processingTime, powerUsage);
         }
 
         @Override
@@ -102,7 +136,7 @@ public class ElectricFurnaceRecipe implements Recipe<SimpleContainer> {
 
         @Override
         public void toNetwork(FriendlyByteBuf pBuffer, ElectricFurnaceRecipe pRecipe) {
-            pBuffer.writeInt(pRecipe.inputItems.size());
+            pBuffer.writeInt(pRecipe.ingredients.size());
 
             for (Ingredient ingredient : pRecipe.getIngredients()) {
                 ingredient.toNetwork(pBuffer);
@@ -110,5 +144,11 @@ public class ElectricFurnaceRecipe implements Recipe<SimpleContainer> {
 
             pBuffer.writeItemStack(pRecipe.getResultItem(null), false);
         }
+    }
+    public int getPowerUsageTick() {
+        return powerUsage;
+    }
+    public int getProcessingTime() {
+        return processingTime;
     }
 }

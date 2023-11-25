@@ -1,8 +1,12 @@
 {
-  "parent": "minecraft:block/orientable",
+  "parent": "minecraft:block/cube",
   "textures": {
-    "front": "prore:block/electric_furnace_on",
-    "side": "prore:block/electric_furnace_side",
-    "top": "prore:block/electric_furnace_side"
+    "north": "prore:block/electric_furnace_on",
+    "south": "prore:block/electric_furnace_energy",
+    "east": "prore:block/electric_furnace_side",
+    "west": "prore:block/electric_furnace_side",
+    "up": "prore:block/electric_furnace_side",
+    "down": "prore:block/electric_furnace_side",
+    "particle": "prore:block/electric_furnace_side"
   }
 }

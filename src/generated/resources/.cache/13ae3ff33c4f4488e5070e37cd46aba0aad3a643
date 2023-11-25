@@ -1,4 +1,8 @@
-// 1.20.1	2023-11-03T08:16:39.826057074	Item Models: prore
+// 1.20.1	2023-10-25T02:09:07.933381835	Item Models: prore
+2c9e153d0566ab5ce0860dab00cf25b443d23642 assets/prore/models/item/battery.json
+021fc5e4561c21c588e70fcc5725948183e70af8 assets/prore/models/item/blank_argument.json
+62b58db6c657dad3ae4aded6f59b6a6ee9f91214 assets/prore/models/item/blank_upgrade.json
+7e6919a281c793e23caf3d500411086ac4fbbd2d assets/prore/models/item/blasting_argument.json
 ab90a8329a5e958cf43f804d5c6c4d0454708af1 assets/prore/models/item/configuration_1.json
 eff22f22b7d401cc0b3eb56f6db7ab13af7cfb1b assets/prore/models/item/configuration_2.json
 5e17d9374682db2bd2b7eceebf7cfaeeb9282358 assets/prore/models/item/configuration_3.json
@@ -8,6 +12,10 @@ eff22f22b7d401cc0b3eb56f6db7ab13af7cfb1b assets/prore/models/item/configuration_
 d277c71bebf3ad8b2a545c57ee63c2e53d1f75c2 assets/prore/models/item/configuration_7.json
 7e6837aee6979e8d6b711ff8eb3eb70e921df358 assets/prore/models/item/configuration_8.json
 b66220763f3350c24ce7e84f526d0b9ada160a05 assets/prore/models/item/configuration_9.json
+ce55aa887feaee8d1172a8c9e4a2692baaf7e36e assets/prore/models/item/efficiency_upgrade.json
+082f274c44cd2e7da32aa885e021a06dc05eeee4 assets/prore/models/item/overclock_argument.json
+652b96267588375796f93fee747d604baa94d4bb assets/prore/models/item/smoking_argument.json
+79b619bb79ede9fafe78d537337e6034478f9e3f assets/prore/models/item/speed_upgrade.json
 beb676c399158f8568ba2c817dffd664a756c580 assets/prore/models/item/steel_ingot.json
 296390d5efaa414c1e80c5ade01a27bc61ee2e25 assets/prore/models/item/steel_nugget.json
 f78b00c4c15f5eec1aeb8206b6673ed458b36a57 assets/prore/models/item/tempitem.json

@@ -2,8 +2,8 @@ package net.zapp.prore.register.blocks.custom.electric_furnace;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -13,9 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -28,16 +26,21 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.zapp.prore.ProcessingReprocessing;
 import net.zapp.prore.register.blocks.custom.*;
+import net.zapp.prore.register.items.ItemRegister;
+import net.zapp.prore.register.items.custom.ItemHoldingEnergy;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
+import javax.swing.text.html.parser.TagElement;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
-public class ElectricFurnaceTile extends BlockEntity implements MenuProvider, WorldlyContainer {
+public class ElectricFurnaceTile extends BlockEntity implements MenuProvider {
     protected final ContainerData data;
     private int progress = 0;
     private int maxProgress = 100;
-    private int energyUsage = 32;
+    private int currentEnergyUsage = 32;
 
     private int maxEnergyInput = 64;
 
@@ -49,6 +52,10 @@ public class ElectricFurnaceTile extends BlockEntity implements MenuProvider, Wo
     private int right;
     private int push_pull;
 
+    private float speedModifier = 1f;
+    float lastSpeedModifier = 1f;
+    private float efficiencyModifier = 1f;
+
     private final static byte number_of_inputs = 1;
 
     private final static byte number_of_outputs = 1;
@@ -59,8 +66,6 @@ public class ElectricFurnaceTile extends BlockEntity implements MenuProvider, Wo
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
-
-    protected NonNullList<ItemStack> items = NonNullList.withSize(8, ItemStack.EMPTY);
 
     public ElectricFurnaceTile(BlockPos pos, BlockState state) {
         super(TileEntityRegister.ELECTRIC_FURNACE.get(), pos, state);
@@ -77,6 +82,7 @@ public class ElectricFurnaceTile extends BlockEntity implements MenuProvider, Wo
                     case 6 -> ElectricFurnaceTile.this.left;
                     case 7 -> ElectricFurnaceTile.this.right;
                     case 8 -> ElectricFurnaceTile.this.push_pull;
+                    case 9 -> ElectricFurnaceTile.this.currentEnergyUsage;
                     default -> 0;
                 };
             }
@@ -93,14 +99,32 @@ public class ElectricFurnaceTile extends BlockEntity implements MenuProvider, Wo
                     case 6 -> ElectricFurnaceTile.this.left = pValue;
                     case 7 -> ElectricFurnaceTile.this.right = pValue;
                     case 8 -> ElectricFurnaceTile.this.push_pull = pValue;
+                    case 9 -> ElectricFurnaceTile.this.currentEnergyUsage = pValue;
                 }
             }
 
             @Override
             public int getCount() {
-                return 9;
+                return 10;
             }
         };
+    }
+
+    private boolean isCompatibleUpgrade(ItemStack stack) {
+        if (stack.getItem() == ItemRegister.SPEED_UPGRADE.get()) return true;
+        else return stack.getItem() == ItemRegister.EFFICIENCY_UPGRADE.get();
+    }
+    private boolean isCompatibleArgument(ItemStack stack) {
+        if (stack.getItem() == ItemRegister.SMOKING_ARGUMENT.get()) return true;
+        else if (stack.getItem() == ItemRegister.BLASTING_ARGUMENT.get()) return true;
+        else return stack.getItem() == ItemRegister.OVERCLOCK_ARGUMENT.get();
+    }
+
+    private boolean hasItemEnergy(ItemStack stack) {
+        if (stack.hasTag() && stack.getTagElement("data") != null) {
+            return true;
+        }
+        return false;
     }
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(8) {
@@ -117,6 +141,9 @@ public class ElectricFurnaceTile extends BlockEntity implements MenuProvider, Wo
             return switch (slot) {
                 case 0 -> true;
                 case 1 -> false;
+                case 2, 3, 4 -> isCompatibleUpgrade(stack);
+                case 5, 6 -> isCompatibleArgument(stack);
+                case 7 -> (hasItemEnergy(stack));
                 default -> super.isItemValid(slot, stack);
             };
         }
@@ -148,13 +175,13 @@ public class ElectricFurnaceTile extends BlockEntity implements MenuProvider, Wo
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
-        for (LazyOptional<? extends IItemHandler> handler : handlers) handler.invalidate();
+        lazyItemHandler.invalidate();
     }
 
     @Override
     public void reviveCaps() {
         super.reviveCaps();
-        this.handlers = net.minecraftforge.items.wrapper.SidedInvWrapper.create(this, Direction.UP, Direction.DOWN, Direction.WEST, Direction.EAST, Direction.NORTH);
+        lazyItemHandler.cast();
     }
 
     @Override
@@ -167,6 +194,7 @@ public class ElectricFurnaceTile extends BlockEntity implements MenuProvider, Wo
         nbt.putInt("electric_furnace.left", data.get(6));
         nbt.putInt("electric_furnace.right", data.get(7));
         nbt.putInt("electric_furnace.push_pull", data.get(8));
+        nbt.putInt("electric_furnace.current_energy_usage", data.get(9));
         super.saveAdditional(nbt);
     }
 
@@ -181,6 +209,7 @@ public class ElectricFurnaceTile extends BlockEntity implements MenuProvider, Wo
         data.set(6, nbt.getInt("electric_furnace.left"));
         data.set(7, nbt.getInt("electric_furnace.right"));
         data.set(8, nbt.getInt("electric_furnace.push_pull"));
+        data.set(9, nbt.getInt("electric_furnace.current_energy_usage"));
     }
 
     @Override
@@ -195,27 +224,36 @@ public class ElectricFurnaceTile extends BlockEntity implements MenuProvider, Wo
         return new ElectricFurnaceMenu(pContainerId, pPlayerInventory, this, this.data);
     }
 
-    net.minecraftforge.common.util.LazyOptional<? extends net.minecraftforge.items.IItemHandler>[] handlers =
-            net.minecraftforge.items.wrapper.SidedInvWrapper.create(this, Direction.UP, Direction.DOWN, Direction.EAST, Direction.WEST, Direction.NORTH);
+    private final Map<Integer, LazyOptional<WrappedHandler>> sidedWrappedHandlerMap =
+            Map.of(1, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 0, (i, s) -> true)),
+                    2, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 0, (i, s) -> true)),
+                    3, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 0, (i, s) -> true)),
+                    4, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 0, (i, s) -> true)),
+                    5, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 1, (i, s) -> false)),
+                    6, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 1, (i, s) -> false)),
+                    7, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 1, (i, s) -> false)),
+                    8, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 1, (i, s) -> false)),
+                    9, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 0 || i == 1, (i, s) -> true)));
 
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @javax.annotation.Nullable Direction side) {
         if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            if (side == getFacingDirection().getClockWise() && right > 0) {
-                return handlers[3].cast();
+            if (side == null) {
+                return lazyItemHandler.cast();
             }
-            if (side == getFacingDirection().getCounterClockWise() && left > 0) {
-                return handlers[2].cast();
-            }
-            if (side == Direction.UP && up > 0) {
-                return handlers[0].cast();
-            }
+
             if (side == Direction.DOWN && down > 0) {
-                return handlers[1].cast();
+                return sidedWrappedHandlerMap.get(down).cast();
+            } else if (side == Direction.UP && up > 0) {
+                return sidedWrappedHandlerMap.get(up).cast();
+            } else if (side == getFacingDirection().getCounterClockWise() && right > 0) {
+                return sidedWrappedHandlerMap.get(right).cast();
+            } else if (side == getFacingDirection().getClockWise() && left > 0) {
+                return sidedWrappedHandlerMap.get(left).cast();
             }
-            return handlers[4].cast();
         }
+
         if (cap == ForgeCapabilities.ENERGY && side == getFacingDirection().getOpposite()) {
             return lazyEnergyHandler.cast();
         }
@@ -227,28 +265,6 @@ public class ElectricFurnaceTile extends BlockEntity implements MenuProvider, Wo
         return this.getBlockState().getValue(ElectricFurnaceBlock.FACING);
     }
 
-    public int[] getSlotsForFace(Direction p_58363_) {
-        if (p_58363_ == Direction.DOWN) {
-            return new int[]{1};
-        } else if (p_58363_ == Direction.UP) {
-            return new int[]{0};
-        } else {
-            return new int[]{0};
-        }
-    }
-
-    public boolean canPlaceItemThroughFace(int p_58336_, ItemStack p_58337_, @javax.annotation.Nullable Direction p_58338_) {
-        return this.canPlaceItem(p_58336_, p_58337_);
-    }
-
-    public boolean canTakeItemThroughFace(int p_58392_, ItemStack p_58393_, Direction p_58394_) {
-        if (p_58394_ == Direction.DOWN && p_58392_ == 1) {
-            return p_58393_.is(Items.WATER_BUCKET) || p_58393_.is(Items.BUCKET);
-        } else {
-            return true;
-        }
-    }
-
     public void drops() {
         SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
         for (int i = 0; i < itemHandler.getSlots(); i++)
@@ -256,19 +272,46 @@ public class ElectricFurnaceTile extends BlockEntity implements MenuProvider, Wo
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
+    private void setModifiers(SimpleContainer inv) {
+        efficiencyModifier = 1f;
+        speedModifier = 1f;
+        for (int i = 2; i < 5; i++) {
+            if (inv.getItem(i).is(ItemRegister.SPEED_UPGRADE.get() )) {
+                efficiencyModifier += efficiencyModifier;
+                speedModifier -= speedModifier / 2;
+            } else if (inv.getItem(i).is(ItemRegister.EFFICIENCY_UPGRADE.get())) {
+                efficiencyModifier -= efficiencyModifier / 2;
+                speedModifier += speedModifier / 2;
+            }
+        }
+        for (int i = 5; i < 7; i++) {
+            if (inv.getItem(i).is(ItemRegister.SMOKING_ARGUMENT.get())) {
+                speedModifier -= speedModifier / 2;
+            } else if (inv.getItem(i).is(ItemRegister.BLASTING_ARGUMENT.get())) {
+                speedModifier -= speedModifier / 2;
+            } else if (inv.getItem(i).is(ItemRegister.OVERCLOCK_ARGUMENT.get())) {
+                speedModifier = speedModifier / 2;
+                efficiencyModifier = efficiencyModifier * 4;
+            }
+        }
+    }
+
+
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
         if (pLevel.isClientSide()) {
             return;
         }
+        ElectricFurnaceTile tile = (ElectricFurnaceTile) pLevel.getBlockEntity(pPos);
 
-        System.out.println("tick");
+        SimpleContainer inventory = new SimpleContainer(tile.itemHandler.getSlots());
+        for (int i = 0; i < tile.itemHandler.getSlots(); i++)
+            inventory.setItem(i, tile.itemHandler.getStackInSlot(i));
+        setModifiers(inventory);
 
-        if(hasRecipe()) {
-            System.out.println("has recipe");
-            if(hasEnergy(energyStorage)) {
-                System.out.println("has energy");
+        if(hasRecipe(tile)) {
+            if(hasEnergy(energyStorage, data.get(9))) {
                 increaseCraftingProgress();
-                energyStorage.extractEnergy(energyUsage, false);
+                energyStorage.extractEnergy(data.get(9), false);
                 setChanged(pLevel, pPos, pState);
                 pState = pState.setValue(ElectricFurnaceBlock.WORKING, true);
 
@@ -287,6 +330,20 @@ public class ElectricFurnaceTile extends BlockEntity implements MenuProvider, Wo
 
         }
         level.setBlock(pPos, pState, 3);
+
+        if (data.get(2) < data.get(3)) {
+            ItemStack batteryStack = this.itemHandler.getStackInSlot(7);
+            CompoundTag data = batteryStack.getTagElement("data");
+            if (hasItemEnergy(batteryStack)) {
+                if (data.getInt("energy") > 0) {
+                    data.putInt("energy", data.getInt("energy") - data.getInt("outputRate"));
+                    energyStorage.receiveEnergy(data.getInt("outputRate"), false);
+                    if (data.getInt("energy") < 0) {
+                        data.putInt("energy", 0);
+                    }
+                }
+            }
+        }
     }
 
     private void craftItem() {
@@ -299,20 +356,34 @@ public class ElectricFurnaceTile extends BlockEntity implements MenuProvider, Wo
                 this.itemHandler.getStackInSlot(OUTPUT_SLOT).getCount() + result.getCount()));
     }
 
-    private boolean hasRecipe() {
+    public boolean hasRecipe(ElectricFurnaceTile tile) {
+
+        SimpleContainer inventory = new SimpleContainer(tile.itemHandler.getSlots());
+        for (int i = 0; i < tile.itemHandler.getSlots(); i++)
+            inventory.setItem(i, tile.itemHandler.getStackInSlot(i));
 
         Optional<ElectricFurnaceRecipe> recipe = getCurrentRecipe();
-        System.out.println(recipe);
         if(recipe.isEmpty()) {
             return false;
         }
-        ItemStack result = recipe.get().getResultItem(getLevel().registryAccess());
 
-        return canInsertAmountIntoOutputSlot(result.getCount()) && canInsertItemIntoOutputSlot(result.getItem());
+        boolean hasRecipe = recipe.isPresent() && hasEnoughIngredients(recipe.get(), inventory, level)
+                && canOutput(inventory, recipe.get().getResultItem(level.registryAccess()), 1) && canOutputAmount(inventory, 1);
+
+        if (hasRecipe) {
+            if (speedModifier != lastSpeedModifier) {
+                tile.data.set(0, Math.round(tile.data.get(0) * (speedModifier / lastSpeedModifier)));
+                lastSpeedModifier = speedModifier;
+            }
+            tile.data.set(1, Math.round(recipe.get().getProcessingTime() * speedModifier));
+
+        }
+        tile.data.set(9, Math.round(recipe.get().getPowerUsageTick() * efficiencyModifier));
+        return hasRecipe;
     }
 
-    private static boolean hasEnergy(IEnergyStorage energyStorage) {
-        return energyStorage.getEnergyStored() > 0;
+    private static boolean hasEnergy(IEnergyStorage energyStorage, int CurrentUsage) {
+        return energyStorage.getEnergyStored() >= CurrentUsage;
     }
     private static <T extends Recipe<SimpleContainer>> boolean hasEnoughIngredients(T recipe, SimpleContainer inventory, Level level) {
         return recipe.matches(inventory, level);
@@ -330,32 +401,19 @@ public class ElectricFurnaceTile extends BlockEntity implements MenuProvider, Wo
             inventory.setItem(i, this.itemHandler.getStackInSlot(i));
         }
 
-        System.out.println(this.itemHandler.getStackInSlot(0));
-
         return this.level.getRecipeManager().getRecipeFor(ElectricFurnaceRecipe.Type.INSTANCE, inventory, level);
-    }
-
-    private boolean canInsertItemIntoOutputSlot(Item item) {
-        return this.itemHandler.getStackInSlot(OUTPUT_SLOT).isEmpty() || this.itemHandler.getStackInSlot(OUTPUT_SLOT).is(item);
-    }
-
-    private boolean canInsertAmountIntoOutputSlot(int count) {
-        return this.itemHandler.getStackInSlot(OUTPUT_SLOT).getCount() + count <= this.itemHandler.getStackInSlot(OUTPUT_SLOT).getMaxStackSize();
     }
 
     private void increaseCraftingProgress() {
         progress++;
     }
 
-    private boolean hasProgressFinished() {
+    public boolean hasProgressFinished() {
         return progress >= maxProgress;
     }
 
     private void resetProgress() {
         progress = 0;
-    }
-    public int getEnergyUsage() {
-        return energyUsage;
     }
 
     public byte getNumberOfInputs() {
@@ -405,55 +463,5 @@ public class ElectricFurnaceTile extends BlockEntity implements MenuProvider, Wo
 
     public void syncClientToServer(BlockPos pos) {
         Packets.sendToServer(new SidedConfSyncC2S(data.get(4), data.get(5), data.get(6), data.get(7), data.get(8), pos));
-    }
-
-    @Override
-    public int getContainerSize() {
-        return this.items.size();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        for(ItemStack itemstack : this.items) {
-            if (!itemstack.isEmpty()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    public ItemStack getItem(int p_18941_) {
-        return this.items.get(p_18941_);
-    }
-
-    @Override
-    public ItemStack removeItem(int p_18942_, int p_18943_) {
-        return ContainerHelper.removeItem(this.items, p_18942_, p_18943_);
-    }
-
-    @Override
-    public ItemStack removeItemNoUpdate(int p_18951_) {
-        return ContainerHelper.takeItem(this.items, p_18951_);
-    }
-
-    @Override
-    public void setItem(int p_18944_, ItemStack p_18945_) {
-        ItemStack itemstack = this.items.get(p_18944_);
-        this.items.set(p_18944_, p_18945_);
-        if (p_18945_.getCount() > this.getMaxStackSize()) {
-            p_18945_.setCount(this.getMaxStackSize());
-        }
-    }
-
-    @Override
-    public boolean stillValid(Player p_18946_) {
-        return Container.stillValidBlockEntity(this, p_18946_);
-    }
-
-    @Override
-    public void clearContent() {
-        this.items.clear();
     }
 }

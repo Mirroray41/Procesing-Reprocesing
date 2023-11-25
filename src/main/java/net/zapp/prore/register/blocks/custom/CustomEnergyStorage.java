@@ -9,7 +9,13 @@ public abstract class CustomEnergyStorage extends EnergyStorage {
 
     @Override
     public int extractEnergy(int maxExtract, boolean simulate) {
-        int extractedEnergy = super.extractEnergy(maxExtract, simulate);
+        if (!canExtract())
+            return 0;
+
+        int extractedEnergy = (int) Math.min(energy, Math.min(Math.pow(2, 32), maxExtract));
+        if (!simulate)
+            energy -= extractedEnergy;
+
         if (extractedEnergy != 0) onEnergyChanged();
 
         return extractedEnergy;
@@ -17,7 +23,12 @@ public abstract class CustomEnergyStorage extends EnergyStorage {
 
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
-        int receivedEnergy = super.receiveEnergy(maxReceive, simulate);
+        if (!canReceive())
+            return 0;
+
+        int receivedEnergy = (int) Math.min(capacity - energy, Math.min(Math.pow(2, 32), maxReceive));
+        if (!simulate)
+            energy += receivedEnergy;
         if (receivedEnergy != 0) onEnergyChanged();
 
         return receivedEnergy;

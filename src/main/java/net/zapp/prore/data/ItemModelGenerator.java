@@ -18,8 +18,12 @@ public class ItemModelGenerator extends ItemModelProvider {
     @Override
     protected void registerModels() {
         miscItem(ItemRegister.TEMPITEM);
+
         miscItem(ItemRegister.STEEL_INGOT);
         miscItem(ItemRegister.STEEL_NUGGET);
+
+        miscItem(ItemRegister.BATTERY);
+
         miscItem(ItemRegister.CONFIGURATION1);
         miscItem(ItemRegister.CONFIGURATION2);
         miscItem(ItemRegister.CONFIGURATION3);
@@ -29,6 +33,16 @@ public class ItemModelGenerator extends ItemModelProvider {
         miscItem(ItemRegister.CONFIGURATION7);
         miscItem(ItemRegister.CONFIGURATION8);
         miscItem(ItemRegister.CONFIGURATION9);
+
+        miscItem(ItemRegister.BLANK_UPGRADE);
+        miscItem(ItemRegister.BLANK_ARGUMENT);
+        miscItem(ItemRegister.SPEED_UPGRADE);
+        miscItem(ItemRegister.EFFICIENCY_UPGRADE);
+        miscItem(ItemRegister.SMOKING_ARGUMENT);
+        miscItem(ItemRegister.BLASTING_ARGUMENT);
+        miscItem(ItemRegister.OVERCLOCK_ARGUMENT);
+
+
         toolItem(ItemRegister.WRENCH);
     }
 

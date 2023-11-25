@@ -2,20 +2,20 @@
   "type": "prore:electric_furnace",
   "ingredients": [
     {
-      "item": "minecraft:dirt",
+      "item": "minecraft:diamond",
       "count": 1
     }
   ],
   "details": [
     {
-      "time": 100
+      "time": 200
     },
     {
-      "power": 32
+      "power": 16
     }
   ],
   "output": {
-    "item": "minecraft:diamond",
+    "item": "minecraft:dirt",
     "count": 1
   }
 }

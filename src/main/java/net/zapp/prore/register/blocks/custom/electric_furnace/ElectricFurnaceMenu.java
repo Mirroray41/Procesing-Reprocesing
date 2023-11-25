@@ -23,7 +23,7 @@ public class ElectricFurnaceMenu extends AbstractContainerMenu {
     public static final int machineSlotCount = 6;
 
     public ElectricFurnaceMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(9));
+        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(10));
     }
 
     public ElectricFurnaceMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
@@ -62,7 +62,7 @@ public class ElectricFurnaceMenu extends AbstractContainerMenu {
     }
 
     public int getEnergyUsage() {
-        return tile.getEnergyUsage();
+        return this.data.get(9);
     }
 
     public float getEnergy() {

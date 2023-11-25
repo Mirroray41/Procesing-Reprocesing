@@ -91,9 +91,9 @@ public class ElectricFurnaceTileRenderer implements BlockEntityRenderer<Electric
     private ItemStack getNorth(ElectricFurnaceTile pBlockEntity) {
         if (Direction.NORTH != pBlockEntity.getFacingDirection() && Direction.NORTH != pBlockEntity.getFacingDirection().getOpposite()) {
             if (Direction.NORTH == pBlockEntity.getFacingDirection().getClockWise()) {
-                return translateStateToStack(pBlockEntity.data.get(7));
-            } else {
                 return translateStateToStack(pBlockEntity.data.get(6));
+            } else {
+                return translateStateToStack(pBlockEntity.data.get(7));
             }
         }
         return translateStateToStack(0);
@@ -101,9 +101,9 @@ public class ElectricFurnaceTileRenderer implements BlockEntityRenderer<Electric
     private ItemStack getSouth(ElectricFurnaceTile pBlockEntity) {
         if (Direction.SOUTH != pBlockEntity.getFacingDirection() && Direction.SOUTH != pBlockEntity.getFacingDirection().getOpposite()) {
             if (Direction.SOUTH == pBlockEntity.getFacingDirection().getClockWise()) {
-                return translateStateToStack(pBlockEntity.data.get(7));
-            } else {
                 return translateStateToStack(pBlockEntity.data.get(6));
+            } else {
+                return translateStateToStack(pBlockEntity.data.get(7));
             }
         }
         return translateStateToStack(0);
@@ -111,9 +111,9 @@ public class ElectricFurnaceTileRenderer implements BlockEntityRenderer<Electric
     private ItemStack getEast(ElectricFurnaceTile pBlockEntity) {
         if (Direction.EAST != pBlockEntity.getFacingDirection() && Direction.EAST != pBlockEntity.getFacingDirection().getOpposite()) {
             if (Direction.EAST == pBlockEntity.getFacingDirection().getClockWise()) {
-                return translateStateToStack(pBlockEntity.data.get(7));
-            } else {
                 return translateStateToStack(pBlockEntity.data.get(6));
+            } else {
+                return translateStateToStack(pBlockEntity.data.get(7));
             }
         }
         return translateStateToStack(0);
@@ -121,9 +121,9 @@ public class ElectricFurnaceTileRenderer implements BlockEntityRenderer<Electric
     private ItemStack getWest(ElectricFurnaceTile pBlockEntity) {
         if (Direction.WEST != pBlockEntity.getFacingDirection() && Direction.WEST != pBlockEntity.getFacingDirection().getOpposite()) {
             if (Direction.WEST == pBlockEntity.getFacingDirection().getClockWise()) {
-                return translateStateToStack(pBlockEntity.data.get(7));
-            } else {
                 return translateStateToStack(pBlockEntity.data.get(6));
+            } else {
+                return translateStateToStack(pBlockEntity.data.get(7));
             }
         }
         return translateStateToStack(0);

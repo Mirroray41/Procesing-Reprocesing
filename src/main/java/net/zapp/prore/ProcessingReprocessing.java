@@ -2,6 +2,8 @@ package net.zapp.prore;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -59,9 +61,24 @@ public class ProcessingReprocessing {
             event.accept(ItemRegister.STEEL_INGOT.get());
             event.accept(ItemRegister.STEEL_NUGGET.get());
 
+            event.accept(ItemRegister.BLANK_UPGRADE.get());
+            event.accept(ItemRegister.BLANK_ARGUMENT.get());
+
+            event.accept(ItemRegister.SPEED_UPGRADE.get());
+            event.accept(ItemRegister.EFFICIENCY_UPGRADE.get());
+
+            event.accept(ItemRegister.SMOKING_ARGUMENT.get());
+            event.accept(ItemRegister.BLASTING_ARGUMENT.get());
+            event.accept(ItemRegister.OVERCLOCK_ARGUMENT.get());
+
             event.accept(BlockRegister.ELECTRIC_FURNACE.get());
 
             event.accept(ItemRegister.WRENCH);
+
+            ItemStack battery = new ItemStack(ItemRegister.BATTERY.get());
+            if(battery.getTagElement("data" )!= null) battery.getTagElement("data").putInt("energy", 0);
+
+            event.accept(battery);
         }
     }
 
@@ -77,7 +94,6 @@ public class ProcessingReprocessing {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             MenuScreens.register(MenuRegister.ELECTRIC_FURNACE.get(), ElectricFurnaceScreen::new);
-
         }
     }
 }
