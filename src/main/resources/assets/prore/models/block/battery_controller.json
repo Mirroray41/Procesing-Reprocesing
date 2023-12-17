@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "prore:block/battery_controller",
+    "south": "prore:block/battery_casing",
+    "east": "prore:block/battery_casing",
+    "west": "prore:block/battery_casing",
+    "up": "prore:block/battery_casing",
+    "down": "prore:block/battery_casing",
+    "particle": "prore:block/battery_casing"
+  }
+}

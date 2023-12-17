@@ -1,5 +1,11 @@
 {
+  "block.prore.battery_anode_connector": "Battery Anode Connector",
+  "block.prore.battery_casing": "Battery Casing",
+  "block.prore.battery_casing_glass": "Battery Casing Glass",
+  "block.prore.battery_cathode_connector": "Battery Cathode Connector",
+  "block.prore.battery_controller": "Battery Controller",
   "block.prore.electric_furnace": "Electric Furnace",
+  "block.prore.lead_block": "Lead Block",
   "block.prore.steel_block": "Steel Block",
   "block.prore.tempblock": "Temp Block",
   "item.prore.battery": "Battery",

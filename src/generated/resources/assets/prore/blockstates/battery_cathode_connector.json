@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "prore:block/battery_cathode_connector"
+    }
+  }
+}

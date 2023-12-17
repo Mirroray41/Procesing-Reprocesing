@@ -154,6 +154,7 @@ dependencies {
     //runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
 
     implementation fg.deobf("curse.maven:mekanism-268560:4776410")
+    implementation fg.deobf("curse.maven:jei-238222:4712868")
 
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar

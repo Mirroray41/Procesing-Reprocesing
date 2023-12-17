@@ -1,4 +1,10 @@
-// 1.20.1	2023-10-17T08:36:18.242605348	Loot Tables
+// 1.20.1	2023-12-04T12:52:51.477942474	Loot Tables
+d85cb55bca7bf070bc7ce13e87bc0c2f594c73bd data/prore/loot_tables/blocks/battery_anode_connector.json
+c059c99e722dc556f6089d6e3b7c7eb711c759e4 data/prore/loot_tables/blocks/battery_casing.json
+98b02f216bb1eee28d89bafa619368985b3c1c23 data/prore/loot_tables/blocks/battery_casing_glass.json
+f1d491abf74507a6f07a1921b1e9c21d1cd32545 data/prore/loot_tables/blocks/battery_cathode_connector.json
+36e13e985027341d2298a440da9ece28108f7eff data/prore/loot_tables/blocks/battery_controller.json
 ee3d5e5f032146634e7cca8d153988fd4e3d3c0f data/prore/loot_tables/blocks/electric_furnace.json
+ea1e87e1235838564e374a9aff04ef31cfad37d2 data/prore/loot_tables/blocks/lead_block.json
 2ce5c89d17f7ba11914b2c8b6ee037f26c893bb3 data/prore/loot_tables/blocks/steel_block.json
 defcebf2e4393fc92013609f12c3f5646c226d7b data/prore/loot_tables/blocks/tempblock.json

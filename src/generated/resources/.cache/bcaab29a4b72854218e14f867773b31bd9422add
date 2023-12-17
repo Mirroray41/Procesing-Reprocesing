@@ -1,7 +1,22 @@
-// 1.20.1	2023-10-18T09:55:52.890187151	Block States: prore
+// 1.20.1	2023-12-04T12:52:51.479743259	Block States: prore
+9d8ff6521059c72c51773a0c409020401a970951 assets/prore/blockstates/battery_anode_connector.json
+f7abb5e34950701428b4fceb05452db7230ca5fb assets/prore/blockstates/battery_casing.json
+e9122d2bf036e562b02d2790f83486ea22e174d3 assets/prore/blockstates/battery_casing_glass.json
+9d01434ac99b1e750cbc06380824aabebb2a50bf assets/prore/blockstates/battery_cathode_connector.json
+2073bba753329ab0cbed473816d549684eed0c2e assets/prore/blockstates/lead_block.json
 76e8050683a1e361e39dc90e258022286ec9a455 assets/prore/blockstates/steel_block.json
 1349a7e46a467484b47c39f48c74ed320743808d assets/prore/blockstates/tempblock.json
+2f213b1c0581bb024a273d38caa50da390416995 assets/prore/models/block/battery_anode_connector.json
+1a58e1e36a5b683fb67f41e49b741502d418ac2f assets/prore/models/block/battery_casing.json
+3722ad61095414ce0ef987413d1911c0bb3f783c assets/prore/models/block/battery_casing_glass.json
+dbc1a873391736ce9b10a47eed2a8350c94cb9e2 assets/prore/models/block/battery_cathode_connector.json
+9ff27b93c19866d2c08470f81fa8b6723fc84cdb assets/prore/models/block/lead_block.json
 78e14fdcd4a429e6a6774b069dd253a910dcac38 assets/prore/models/block/steel_block.json
 5b673c55efa110b021fdca81d1278f7012c01121 assets/prore/models/block/tempblock.json
+c4db8b13e35f8a16a5b98d205d5f38f6908a6b4e assets/prore/models/item/battery_anode_connector.json
+8ed69f117af71bcf6022dfcbb4deaaa6657f24e0 assets/prore/models/item/battery_casing.json
+8c2e30150d754ecc1f5a9001871e8e29647daa38 assets/prore/models/item/battery_casing_glass.json
+d86bf9ef5932883361ab5708f3d4010ccb546e57 assets/prore/models/item/battery_cathode_connector.json
+0fe6f7e6499c6455e8198c5cac87b6b8f5b0d413 assets/prore/models/item/lead_block.json
 e84c7c4ff7560aa9d0e9aa1fd4f0865768296834 assets/prore/models/item/steel_block.json
 53e87a7b71bfb174548523c87a2f61ca7e99db42 assets/prore/models/item/tempblock.json

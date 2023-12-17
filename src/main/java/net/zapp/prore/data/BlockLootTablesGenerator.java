@@ -18,6 +18,12 @@ public class BlockLootTablesGenerator extends BlockLootSubProvider {
         dropSelf(BlockRegister.TEMPBLOCK.get());
         dropSelf(BlockRegister.STEEL_BLOCK.get());
         dropSelf(BlockRegister.ELECTRIC_FURNACE.get());
+        dropSelf(BlockRegister.BATTERY_CASING.get());
+        dropSelf(BlockRegister.BATTERY_CONTROLLER.get());
+        dropSelf(BlockRegister.BATTERY_CASING_GLASS.get());
+        dropSelf(BlockRegister.LEAD_BLOCK.get());
+        dropSelf(BlockRegister.BATTERY_ANODE_CONNECTOR.get());
+        dropSelf(BlockRegister.BATTERY_CATHODE_CONNECTOR.get());
     }
 
     @Override

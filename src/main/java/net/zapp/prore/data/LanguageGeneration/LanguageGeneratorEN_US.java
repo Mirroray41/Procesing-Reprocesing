@@ -24,9 +24,15 @@ public class LanguageGeneratorEN_US extends LanguageProvider {
         add(ItemRegister.STEEL_INGOT.get(), "Steel Ingot");
 
         add(BlockRegister.STEEL_BLOCK.get(), "Steel Block");
+        add(BlockRegister.LEAD_BLOCK.get(), "Lead Block");
         add(BlockRegister.ELECTRIC_FURNACE.get(), "Electric Furnace");
 
         add(ItemRegister.BATTERY.get(), "Battery");
+        add(BlockRegister.BATTERY_CASING.get(), "Battery Casing");
+        add(BlockRegister.BATTERY_CASING_GLASS.get(), "Battery Casing Glass");
+        add(BlockRegister.BATTERY_CONTROLLER.get(), "Battery Controller");
+        add(BlockRegister.BATTERY_CATHODE_CONNECTOR.get(), "Battery Cathode Connector");
+        add(BlockRegister.BATTERY_ANODE_CONNECTOR.get(), "Battery Anode Connector");
 
         add("prore.container.electric_furnace", "Electric Furnace");
         add("prore.info.upgrades", "§7In these slots you can add upgrades to make your machine better!");

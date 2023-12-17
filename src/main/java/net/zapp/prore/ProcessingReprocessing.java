@@ -2,8 +2,6 @@ package net.zapp.prore;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -15,11 +13,11 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.zapp.prore.register.blocks.BlockRegister;
-import net.zapp.prore.register.blocks.custom.MenuRegister;
-import net.zapp.prore.register.blocks.custom.Packets;
-import net.zapp.prore.register.blocks.custom.RecipeRegister;
-import net.zapp.prore.register.blocks.custom.TileEntityRegister;
-import net.zapp.prore.register.blocks.custom.electric_furnace.ElectricFurnaceScreen;
+import net.zapp.prore.register.blocks.custom.machine.MenuRegister;
+import net.zapp.prore.register.blocks.custom.machine.Packets;
+import net.zapp.prore.register.blocks.custom.machine.RecipeRegister;
+import net.zapp.prore.register.blocks.custom.machine.TileEntityRegister;
+import net.zapp.prore.register.blocks.custom.machine.electric_furnace.ElectricFurnaceScreen;
 import net.zapp.prore.register.items.ItemRegister;
 import net.zapp.prore.register.itemtabs.ItemTabRegister;
 import org.slf4j.Logger;
@@ -73,12 +71,15 @@ public class ProcessingReprocessing {
 
             event.accept(BlockRegister.ELECTRIC_FURNACE.get());
 
-            event.accept(ItemRegister.WRENCH);
+            event.accept(ItemRegister.WRENCH.get());
 
-            ItemStack battery = new ItemStack(ItemRegister.BATTERY.get());
-            if(battery.getTagElement("data" )!= null) battery.getTagElement("data").putInt("energy", 0);
+            event.accept(ItemRegister.BATTERY.get());
 
-            event.accept(battery);
+            event.accept(BlockRegister.BATTERY_CASING.get());
+            event.accept(BlockRegister.BATTERY_CONTROLLER.get());
+            event.accept(BlockRegister.BATTERY_ANODE_CONNECTOR.get());
+            event.accept(BlockRegister.BATTERY_CATHODE_CONNECTOR.get());
+            event.accept(BlockRegister.LEAD_BLOCK.get());
         }
     }
 

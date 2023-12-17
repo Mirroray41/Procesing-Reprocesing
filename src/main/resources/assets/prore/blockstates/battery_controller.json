@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "prore:block/battery_controller",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "prore:block/battery_controller"
+    },
+    "facing=south": {
+      "model": "prore:block/battery_controller",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "prore:block/battery_controller",
+      "y": 270
+    }
+  }
+}

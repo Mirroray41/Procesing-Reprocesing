@@ -1,5 +1,7 @@
 package net.zapp.prore.data;
 
+import net.minecraft.SharedConstants;
+import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
@@ -23,7 +25,7 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
 
         nineBlockStorageRecipes(consumer, RecipeCategory.BUILDING_BLOCKS, ItemRegister.TEMPITEM.get(), RecipeCategory.MISC,
-                BlockRegister.TEMPBLOCK.get());
+                ItemRegister.BATTERY.get());
 
         nineBlockStorageRecipes(consumer, RecipeCategory.BUILDING_BLOCKS, ItemRegister.STEEL_INGOT.get(), RecipeCategory.MISC,
                 BlockRegister.STEEL_BLOCK.get());

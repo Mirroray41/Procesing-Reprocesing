@@ -17,6 +17,11 @@ public class BlockStateGenerator extends BlockStateProvider {
     protected void registerStatesAndModels() {
         blockWithItem(BlockRegister.TEMPBLOCK);
         blockWithItem(BlockRegister.STEEL_BLOCK);
+        blockWithItem(BlockRegister.BATTERY_CASING);
+        blockWithItem(BlockRegister.BATTERY_CASING_GLASS);
+        blockWithItem(BlockRegister.LEAD_BLOCK);
+        blockWithItem(BlockRegister.BATTERY_ANODE_CONNECTOR);
+        blockWithItem(BlockRegister.BATTERY_CATHODE_CONNECTOR);
     }
 
     private void blockWithItem(RegistryObject<Block> blockRegistryObject) {

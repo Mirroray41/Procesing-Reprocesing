@@ -10,6 +10,7 @@ import net.zapp.prore.ProcessingReprocessing;
 import net.zapp.prore.register.items.custom.ItemHoldingEnergy;
 import net.zapp.prore.register.items.custom.ItemWithTranslatableMultilineTooltip;
 import net.zapp.prore.register.items.custom.ItemWithTranslatableTooltip;
+import net.zapp.prore.register.items.custom.WrenchItem;
 
 public class ItemRegister {
     public static final DeferredRegister<Item> ITEMS =
@@ -43,7 +44,7 @@ public class ItemRegister {
             () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench",
-            () -> new Item(new Item.Properties().durability(120)));
+            () -> new WrenchItem(new Item.Properties().durability(120)));
 
     public static final RegistryObject<Item> BLANK_UPGRADE = ITEMS.register("blank_upgrade",
             () -> new ItemWithTranslatableTooltip(new Item.Properties().stacksTo(8).rarity(Rarity.UNCOMMON), "item.prore.blank_upgrade"));
