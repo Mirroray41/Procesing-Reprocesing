@@ -19,14 +19,11 @@ import net.zapp.prore.register.items.ItemRegister;
 
 public class ElectricFurnaceTileRenderer implements BlockEntityRenderer<ElectricFurnaceTile> {
 
-    protected static final ResourceLocation YOUR_TEXTURE_RESOURCE_LOCATION = new ResourceLocation(ProcessingReprocessing.MOD_ID, "textures/block/electric_furnace.png");
     public ElectricFurnaceTileRenderer(BlockEntityRendererProvider.Context context) {
         this.context = context;
     }
 
     private final BlockEntityRendererProvider.Context context;
-
-    private final ItemStack localItem = new ItemStack(Items.IRON_INGOT);
 
     private static final float constant = 0.03124f;
 

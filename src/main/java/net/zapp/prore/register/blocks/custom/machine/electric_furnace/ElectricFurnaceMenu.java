@@ -11,7 +11,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.zapp.prore.register.blocks.BlockRegister;
-import net.zapp.prore.register.blocks.custom.machine.MenuRegister;
+import net.zapp.prore.register.blocks.custom.MenuRegister;
 
 public class ElectricFurnaceMenu extends AbstractContainerMenu {
     public final ElectricFurnaceTile tile;

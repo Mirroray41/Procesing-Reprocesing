@@ -13,6 +13,9 @@ import net.minecraftforge.registries.RegistryObject;
 import net.zapp.prore.ProcessingReprocessing;
 import net.zapp.prore.register.blocks.custom.machine.battery_controller.BatteryControllerBlock;
 import net.zapp.prore.register.blocks.custom.machine.electric_furnace.ElectricFurnaceBlock;
+import net.zapp.prore.register.blocks.custom.pipes.BasePipeBlock;
+import net.zapp.prore.register.blocks.custom.pipes.Energy.EnergyPipeBlock;
+import net.zapp.prore.register.blocks.custom.pipes.PipeBlockWithoutEntity;
 import net.zapp.prore.register.items.ItemRegister;
 
 import java.util.function.Supplier;
@@ -51,6 +54,12 @@ public class BlockRegister {
 
     public static final RegistryObject<Block> BATTERY_CONTROLLER = registerBlock("battery_controller",
             () -> new BatteryControllerBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
+
+    public static final RegistryObject<Block> PIPE = registerBlock("pipe",
+            () -> new BasePipeBlock((float) 3 / 16, BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
+
+    public static final RegistryObject<Block> ENERGY_PIPE = registerBlock("energy_pipe",
+            () -> new EnergyPipeBlock((float) 3 / 16, BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
 
 
 

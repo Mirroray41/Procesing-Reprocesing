@@ -1,4 +1,4 @@
-package net.zapp.prore.register.blocks.custom.machine;
+package net.zapp.prore.register.blocks.custom;
 
 
 import net.minecraft.world.inventory.AbstractContainerMenu;

@@ -1,4 +1,4 @@
-package net.zapp.prore.register.blocks.custom.machine;
+package net.zapp.prore.register.blocks.custom;
 
 import net.minecraftforge.energy.EnergyStorage;
 
@@ -40,4 +40,14 @@ public abstract class CustomEnergyStorage extends EnergyStorage {
     }
 
     public abstract void onEnergyChanged();
+
+    @Override
+    public boolean canReceive() {
+        return super.canReceive();
+    }
+
+    @Override
+    public boolean canExtract() {
+        return super.canExtract();
+    }
 }

@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
-import net.zapp.prore.register.blocks.custom.machine.TileEntityRegister;
+import net.zapp.prore.register.blocks.custom.TileEntityRegister;
 import net.zapp.prore.register.items.ItemRegister;
 
 import javax.annotation.Nullable;

@@ -24,6 +24,9 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.zapp.prore.ProcessingReprocessing;
+import net.zapp.prore.register.blocks.custom.CustomEnergyStorage;
+import net.zapp.prore.register.blocks.custom.Packets;
+import net.zapp.prore.register.blocks.custom.TileEntityRegister;
 import net.zapp.prore.register.blocks.custom.machine.*;
 import net.zapp.prore.register.items.ItemRegister;
 import org.jetbrains.annotations.NotNull;
@@ -149,7 +152,7 @@ public class ElectricFurnaceTile extends BlockEntity implements MenuProvider {
         @Override
         public void onEnergyChanged() {
             setChanged();
-            Packets.sendToClients(new EnergySyncS2C(this.energy, getBlockPos()));
+            Packets.sendToClients(new MachineEnergySyncS2C(this.energy, getBlockPos()));
         }
     };
 
@@ -216,7 +219,7 @@ public class ElectricFurnaceTile extends BlockEntity implements MenuProvider {
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        Packets.sendToClients(new EnergySyncS2C(this.energyStorage.getEnergyStored(), worldPosition));
+        Packets.sendToClients(new MachineEnergySyncS2C(this.energyStorage.getEnergyStored(), worldPosition));
         return new ElectricFurnaceMenu(pContainerId, pPlayerInventory, this, this.data);
     }
 

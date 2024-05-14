@@ -9,16 +9,16 @@ import net.zapp.prore.register.blocks.custom.machine.electric_furnace.ElectricFu
 
 import java.util.function.Supplier;
 
-public class EnergySyncS2C {
+public class MachineEnergySyncS2C {
     private final int energy;
     private final BlockPos pos;
 
-    public EnergySyncS2C(int energy, BlockPos pos) {
+    public MachineEnergySyncS2C(int energy, BlockPos pos) {
         this.energy = energy;
         this.pos = pos;
     }
 
-    public EnergySyncS2C(FriendlyByteBuf buf) {
+    public MachineEnergySyncS2C(FriendlyByteBuf buf) {
         this.energy = buf.readInt();
         this.pos = buf.readBlockPos();
     }
